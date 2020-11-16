@@ -58,8 +58,8 @@ python -u lnmap.py \
     --dico_eval_path "path/to/eval-dictionary/folder/" \
     --exp_path $OUT_ADDRESS\
     --seed $seed \
-    --nonlinear_autoenc \
-    --nonlinear_mapper \
+    --nonlinear_autoenc True \
+    --nonlinear_mapper True \
     --dico_max_rank 50000 
             
 ```
