@@ -3,6 +3,11 @@
 This repository contains the code of our paper [LNMap: Departures from Isomorphic Assumption in Bilingual Lexicon Induction Through Non-Linear Mapping in Latent Space](https://www.aclweb.org/anthology/2020.emnlp-main.215/) (EMNLP 2020).
 
 ![lnmap](https://taasnim.github.io/img/lnmap/model.png)
+<p align="center">
+<img src="https://taasnim.github.io/img/lnmap/model.png" width="800">
+</p>
+
+--------------------------------------------------------------------------------
 
 
 ## Requirements
