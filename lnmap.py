@@ -79,7 +79,6 @@ def main():
     trainer.load_training_dico(logger)
     trainer.load_training_dico(logger, src2tgt=False)
     logger.info("Seed dictionary size: {}".format(trainer.dico_AB.shape[0]))
-    # logger.info("Target train dico shape: {}".format(trainer.dico_BA.shape))
     trainer.dico_AB_original = trainer.dico_AB.clone()
     trainer.dico_BA_original = trainer.dico_BA.clone()
 
@@ -94,15 +93,7 @@ def main():
     # Source to Target Training
     logger.info("\n \n Training for {} to {}".format( params.src_lang, params.tgt_lang))
     for i in range(params.iteration):
-        # logger.info("\n\n***Iteration: {}".format(i))
         trainer.train_A2B()
-        
-        # trainer.set_eval()
-        # precision_at_1  = get_word_translation_accuracy(params, 
-        #         trainer.mapping_G(trainer.encoder_A(trainer.src_emb.weight.data).data).data,
-        #         trainer.encoder_B(trainer.tgt_emb.weight.data).data,
-        #         src2tgt=True
-        #     )
    
         emb1 = (trainer.mapping_G(trainer.encoder_A(trainer.src_emb.weight.data)).data)[0:params.dico_max_rank]
         emb2 = (trainer.encoder_B(trainer.tgt_emb.weight.data).data)[0:params.dico_max_rank]
@@ -132,15 +123,7 @@ def main():
     logger.info("\n \n Training for {} to {}".format(params.tgt_lang, params.src_lang))
     n_iter = 0
     for i in range(params.iteration):
-        # logger.info("\n\n***Iteration: {}".format(i))
         trainer.train_B2A()
-        
-        # trainer.set_eval()
-        # precision_at_1 = get_word_translation_accuracy(params,
-        #         trainer.mapping_F(trainer.encoder_B(trainer.tgt_emb.weight.data).data).data, 
-        #         trainer.encoder_A(trainer.src_emb.weight.data).data,
-        #         src2tgt=False
-        #     )
    
         emb1 = ((trainer.encoder_A(trainer.src_emb.weight.data)).data)[0:params.dico_max_rank]
         emb2 = (trainer.mapping_F(trainer.encoder_B(trainer.tgt_emb.weight.data)).data)[0:params.dico_max_rank]
@@ -155,7 +138,6 @@ def main():
             logger.info("After first iteration train dictionary size: {}".format(trainer.dico_BA.shape[0]))
 
     logger.info("Final iteration train dictionary size: {}".format(trainer.dico_BA.shape[0]))
-        # logger.info("New train dictionary size: {}".format(trainer.dico_AB.shape[0]))
  
     trainer.set_eval()
     precision_at_1 = get_word_translation_accuracy(params,
