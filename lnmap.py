@@ -94,15 +94,15 @@ def main():
     # Source to Target Training
     logger.info("\n \n Training for {} to {}".format( params.src_lang, params.tgt_lang))
     for i in range(params.iteration):
-        logger.info("\n\n***Iteration: {}".format(i))
+        # logger.info("\n\n***Iteration: {}".format(i))
         trainer.train_A2B()
         
-        trainer.set_eval()
-        precision_at_1  = get_word_translation_accuracy(params, 
-                trainer.mapping_G(trainer.encoder_A(trainer.src_emb.weight.data).data).data,
-                trainer.encoder_B(trainer.tgt_emb.weight.data).data,
-                src2tgt=True
-            )
+        # trainer.set_eval()
+        # precision_at_1  = get_word_translation_accuracy(params, 
+        #         trainer.mapping_G(trainer.encoder_A(trainer.src_emb.weight.data).data).data,
+        #         trainer.encoder_B(trainer.tgt_emb.weight.data).data,
+        #         src2tgt=True
+        #     )
    
         emb1 = (trainer.mapping_G(trainer.encoder_A(trainer.src_emb.weight.data)).data)[0:params.dico_max_rank]
         emb2 = (trainer.encoder_B(trainer.tgt_emb.weight.data).data)[0:params.dico_max_rank]
@@ -115,6 +115,13 @@ def main():
         trainer.dico_AB = torch.cat((trainer.dico_AB_original, all_pairs[:add_size].cuda()), 0)
         logger.info("New train dictionary shape: {}".format(trainer.dico_AB.shape))
 
+    trainer.set_eval()
+    precision_at_1  = get_word_translation_accuracy(params, 
+            trainer.mapping_G(trainer.encoder_A(trainer.src_emb.weight.data).data).data,
+            trainer.encoder_B(trainer.tgt_emb.weight.data).data,
+            src2tgt=True
+        )
+
     if params.save_model_weights:
         save_model_weights(params, trainer, src2tgt=True)
 
@@ -123,15 +130,15 @@ def main():
     logger.info("\n \n Training for {} to {}".format(params.tgt_lang, params.src_lang))
     n_iter = 0
     for i in range(params.iteration):
-        logger.info("\n\n***Iteration: {}".format(i))
+        # logger.info("\n\n***Iteration: {}".format(i))
         trainer.train_B2A()
         
-        trainer.set_eval()
-        precision_at_1 = get_word_translation_accuracy(params,
-                trainer.mapping_F(trainer.encoder_B(trainer.tgt_emb.weight.data).data).data, 
-                trainer.encoder_A(trainer.src_emb.weight.data).data,
-                src2tgt=False
-            )
+        # trainer.set_eval()
+        # precision_at_1 = get_word_translation_accuracy(params,
+        #         trainer.mapping_F(trainer.encoder_B(trainer.tgt_emb.weight.data).data).data, 
+        #         trainer.encoder_A(trainer.src_emb.weight.data).data,
+        #         src2tgt=False
+        #     )
    
         emb1 = ((trainer.encoder_A(trainer.src_emb.weight.data)).data)[0:params.dico_max_rank]
         emb2 = (trainer.mapping_F(trainer.encoder_B(trainer.tgt_emb.weight.data)).data)[0:params.dico_max_rank]
@@ -144,6 +151,13 @@ def main():
         trainer.dico_BA = torch.cat((trainer.dico_BA_original, all_pairs[:add_size].cuda()), 0)
         logger.info("New train dictionary shape: {}".format(trainer.dico_AB.shape))
  
+    trainer.set_eval()
+    precision_at_1 = get_word_translation_accuracy(params,
+            trainer.mapping_F(trainer.encoder_B(trainer.tgt_emb.weight.data).data).data, 
+            trainer.encoder_A(trainer.src_emb.weight.data).data,
+            src2tgt=False
+        )
+
     if params.save_model_weights:
         save_model_weights(params, trainer, src2tgt=False)
         
