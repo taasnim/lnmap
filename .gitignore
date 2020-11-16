@@ -126,5 +126,6 @@ data/
 .vscode/settings.json
 
 # Experimental Folder
+logs/
 src/__pycache__/
 src/evaluation/__pycache__/

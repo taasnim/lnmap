@@ -6,7 +6,6 @@ import sys
 from logging import getLogger
 import numpy as np
 import torch
-DIC_EVAL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'data', 'crosslingual', 'dictionaries')
 
 # load Faiss if available (dramatically accelerates the nearest neighbor search)
 try:

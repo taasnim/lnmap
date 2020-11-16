@@ -72,7 +72,6 @@ def logistics_params(parser):
     group.add_argument("--seed", type=int, default=-1, help="Initialization seed")
     group.add_argument("--verbose", type=int, default=2, help="Verbose level (2:debug, 1:info, 0:warning)")
     group.add_argument("--exp_path", type=str, default="", help="Where to store experiment logs and models")
-    group.add_argument("--result_path", type=str, default="", help="Where to store experiment results")
     group.add_argument("--exp_name", type=str, default="debug", help="Experiment name")
     group.add_argument("--exp_id", type=str, default="", help="Experiment ID")
     group.add_argument("--cuda", type=bool, default=True, help="Run on GPU")

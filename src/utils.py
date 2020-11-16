@@ -15,7 +15,6 @@ import torch
 from torch import optim
 from logging import getLogger
 
-from .logger import create_logger
 from .dictionary import Dictionary
 
 MAIN_DUMP_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'dumped')
@@ -37,31 +36,6 @@ except ImportError:
     FAISS_AVAILABLE = False
 
 
-def initialize_exp(params, _path=None):
-    """
-    Initialize experiment.
-    """
-    # initialization
-    if getattr(params, 'seed', -1) >= 0:
-        np.random.seed(params.seed)
-        torch.manual_seed(params.seed)
-        if params.cuda:
-            torch.cuda.manual_seed(params.seed)
-
-    # dump parameters
-    params.exp_path = get_exp_path(params)
-    with io.open(os.path.join(params.exp_path, 'params.pkl'), 'wb') as f:
-        pickle.dump(params, f)
-
-    # create logger
-    if _path is None:
-        logger = create_logger(os.path.join(params.exp_path, 'train.log'), vb=params.verbose)
-    else:
-        logger = create_logger(_path, vb=params.verbose)
-    logger.info('============ Initialized logger ============')
-    logger.info('\n'.join('%s: %s' % (k, str(v)) for k, v in sorted(dict(vars(params)).items())))
-    logger.info('The experiment will be stored in %s' % params.exp_path)
-    return logger
 
 
 def get_nn_avg_dist(emb, query, knn):
