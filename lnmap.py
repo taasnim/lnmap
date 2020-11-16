@@ -78,8 +78,8 @@ def main():
 
     trainer.load_training_dico(logger)
     trainer.load_training_dico(logger, src2tgt=False)
-    logger.info("Source train dico shape: {}".format(trainer.dico_AB.shape))
-    logger.info("Target train dico shape: {}".format(trainer.dico_BA.shape))
+    logger.info("Seed dictionary size: {}".format(trainer.dico_AB.shape[0]))
+    # logger.info("Target train dico shape: {}".format(trainer.dico_BA.shape))
     trainer.dico_AB_original = trainer.dico_AB.clone()
     trainer.dico_BA_original = trainer.dico_BA.clone()
 
@@ -113,8 +113,10 @@ def main():
         
         add_size = params.induced_dico_c*(i+1)
         trainer.dico_AB = torch.cat((trainer.dico_AB_original, all_pairs[:add_size].cuda()), 0)
-        logger.info("New train dictionary shape: {}".format(trainer.dico_AB.shape))
+        if i==0:
+            logger.info("After first iteration train dictionary size: {}".format(trainer.dico_AB.shape[0]))
 
+    logger.info("Final iteration train dictionary size: {}".format(trainer.dico_AB.shape[0]))
     trainer.set_eval()
     precision_at_1  = get_word_translation_accuracy(params, 
             trainer.mapping_G(trainer.encoder_A(trainer.src_emb.weight.data).data).data,
@@ -149,7 +151,11 @@ def main():
         
         add_size = params.induced_dico_c*(i+1)
         trainer.dico_BA = torch.cat((trainer.dico_BA_original, all_pairs[:add_size].cuda()), 0)
-        logger.info("New train dictionary shape: {}".format(trainer.dico_AB.shape))
+        if i==0:
+            logger.info("After first iteration train dictionary size: {}".format(trainer.dico_BA.shape[0]))
+
+    logger.info("Final iteration train dictionary size: {}".format(trainer.dico_BA.shape[0]))
+        # logger.info("New train dictionary size: {}".format(trainer.dico_AB.shape[0]))
  
     trainer.set_eval()
     precision_at_1 = get_word_translation_accuracy(params,
