@@ -64,7 +64,7 @@ python -u lnmap.py \
     --seed $seed \
     --nonlinear_autoenc True \
     --nonlinear_mapper True \
-    --dico_max_rank 50000 
+    --dataset $dataset
             
 ```
 
